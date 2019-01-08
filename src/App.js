@@ -1,25 +1,36 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
 import './App.css';
+import IntlTelInput from 'react-intl-tel-input'
+import 'react-intl-tel-input/dist/main.css'
 
 class App extends Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      value: '',
+      infoVisible: false,
+    }
+    this.onPhoneNumberChange = this.onPhoneNumberChange.bind(this)
+  }
+
+  onPhoneNumberChange(isValid, value, countryData, number) {
+    this.setState({
+      value: number,
+      infoVisible: value !== number
+    })
+  }
+
   render() {
+    const { value, infoVisible } = this.state
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
+      <div className="container">
+        <p>Type here:</p>
+        <IntlTelInput
+          css={['intl-tel-input', 'form-control']}
+          value={value}
+          onPhoneNumberChange={this.onPhoneNumberChange}
+        />
+        {infoVisible && <p style={{ position: 'absolute', color: 'red', top: '30px' }}>Cursor position just broke!</p>}
       </div>
     );
   }
